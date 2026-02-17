@@ -25,14 +25,224 @@ class Parser:
     def __init__(self, effect_string: str) -> None:
         """
         Initialises a parser instance.
-        
+
         :param effect_string: The effect to parse.
         :type effect_string: str
         """
 
         self.effect_string = effect_string
-        self.TRIGGERS = ["tap?", "summon?", "enter?", "attacking?", "blocking?", "discard?", "tapfor"]
-        self.STATIC_ABILITIES = ["haste", "flying", "reach", "entertap", "unblockable", "trample", "invincible"]
+        self.TRIGGERS = [
+            "tap?",
+            "summon?",
+            "enter?",
+            "attacking?",
+            "blocking?",
+            "discard?",
+            "tapfor",
+        ]
+        self.STATIC_ABILITIES = [
+            "haste",
+            "flying",
+            "reach",
+            "entertap",
+            "unblockable",
+            "trample",
+            "invincible",
+        ]
         self.MODIFIERS = ["inc", "dec"]
-        self.ACTIONS = ["gen", "draw", "discard", "heal", "return", "count", "damage", "destroy", "apply", "kill", "morph"]
-    
+        self.ACTIONS = [
+            "gen",
+            "draw",
+            "discard",
+            "heal",
+            "return",
+            "count",
+            "damage",
+            "destroy",
+            "apply",
+            "kill",
+            "morph",
+            "revive",
+            "nomanareset",
+            "create",
+        ]
+        self.PLACES = ["graveyard", "deck", "hand"]
+        self.FIELDS = ["att", "end"]
+        self.TARGET_TYPES = ["creatureid", "player"]
+
+    def parse(self) -> list:
+        """
+        Returns a list of parsed instructions to process.
+        """
+        if not self.effect_string:
+            return []
+
+        instructions = []
+        raw_instructions = self.effect_string.split(";")
+
+        for instruction in raw_instructions:
+            instruction = instruction.strip()
+            if instruction:
+                parsed = self.parse_single(instruction)
+                if parsed:
+                    instructions.append(parsed)
+
+        return instruction
+
+    def tokenise(self, instruction: str) -> dict:
+        """
+        Splits a given instruction into individual tokens for processing.
+
+        :param instruction: The instruction to be tokenised.
+        :type instruction: str
+        """
+        tokens = []
+        current = ""
+        depth = 0
+        paren_content = ""
+        in_quotes = False
+
+        for char in instruction:
+            if char == '"' and depth == 0:
+                if in_quotes:
+                    if current.strip():
+                        tokens.append(current.strip())
+                        current = ""
+                    in_quotes = False
+                else:
+                    if current.strip():
+                        tokens.append(current.strip())
+                        current = ""
+                    in_quotes = True
+                continue
+            if char == "(":
+                if depth == 0:
+                    if current.strip():
+                        tokens.append(current.strip())
+                        current = ""
+                depth += 1
+            elif char == ")":
+                depth -= 1
+                if depth == 0:
+                    inner_tokens = self._split_paren_tokens(paren_content)
+                    tokens.append(tuple(inner_tokens))
+                    paren_content = ""
+            elif depth > 0:
+                paren_content += char
+            elif in_quotes:
+                current += char
+            elif char.isspace():
+                if current.strip():
+                    tokens.append(current.strip())
+                    current = ""
+            else:
+                current += char
+
+        if current.strip():
+            tokens.append(current.strip())
+
+        return tokens
+
+    def parse_single(self, instruction):
+        """
+        Parses single instructions into separate values.
+        """
+        result = {
+            "trigger": None,
+            "raw": instruction,
+            "action": None,
+            "field": None,
+            "value": None,
+            "amount": None,
+            "name": None,
+            "target_type": None,
+        }
+
+        if instruction.strip() in self.STATIC_ABILITIES:
+            result["action"] = "static"
+            result["status"] = instruction.strip()
+            return result
+
+        tokens = self.tokenise(instruction)
+        if not tokens:
+            return None
+
+        index = 0
+
+        if index >= len(tokens):  # No more tokens to parse, return
+            return result
+
+        if tokens[index].endswith("?"):
+            result["trigger"] = tokens[index]
+            index += 1
+
+        action = tokens[index]
+        result["action"] = action
+        index += 1
+
+        # Is it a modifier-based action?
+        if action in self.MODIFIERS:
+            result["field"] = tokens[index]
+            index += 1
+
+            # Check for integer value to increment by
+            if index < len(tokens):
+                if isinstance(tokens[index], tuple):
+                    result["value"] = tokens[index]  # Resolve expression later
+                else:
+                    try:
+                        result["value"] = int(tokens[index])
+                    except ValueError:
+                        result["value"] = 1
+                index += 1
+            else:
+                result["value"] = 1
+
+            # Check for a specific target name
+            if index < len(tokens):
+                name = tokens[index]
+                if name not in self.TARGET_TYPES and "/" not in name:
+                    result["name"] = name
+                    index += 1
+
+            # Check for whether or not a target is required
+            if index < len(tokens):
+                if tokens[index] == "creatureid":
+                    result["creatureid"] = True
+                    index += 1
+                else:
+                    target_token = tokens[index]
+                    if '/' in target_token:
+                        result["target_type"] = target_token.split('/')
+                        index += 1
+                    elif target_token in self.TARGET_TYPES:
+                        result["target_type"] = target_token
+                        index += 1
+
+            # Check whether or not global/all is included
+            if index < len(tokens):
+                if tokens[index] == "all":  # All means EVERY single active creature
+                    result["all"] = True
+                elif tokens[index] == "global":
+                    result["global"] = True # Global means ONLY the player's creatures
+
+        elif action == 'gen':
+            amount = 1
+            colors = []
+            if index < len(tokens):
+                if type(tokens[index]) == tuple:
+                    result["value"] = tokens[index]
+                    index += 1
+                else:
+                    try:
+                        amount = int(tokens[index])
+                        index += 1
+                    except (ValueError, TypeError):
+                        amount = 1
+                if index < len(tokens):
+                    colors = tokens[index].split('/')
+                    
+            result['field'] = 'mana'
+            result['value'] = colors
+            result['amount'] = amount
+            
