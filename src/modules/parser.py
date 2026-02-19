@@ -190,13 +190,8 @@ class Parser:
                 if isinstance(tokens[index], tuple):
                     result["value"] = tokens[index]  # Resolve expression later
                 else:
-                    try:
-                        result["value"] = int(tokens[index])
-                    except ValueError:
-                        result["value"] = 1
+                    result["value"] = int(tokens[index])
                 index += 1
-            else:
-                result["value"] = 1
 
             # Check for a specific target name
             if index < len(tokens):
@@ -234,15 +229,23 @@ class Parser:
                     result["value"] = tokens[index]
                     index += 1
                 else:
-                    try:
-                        amount = int(tokens[index])
-                        index += 1
-                    except (ValueError, TypeError):
-                        amount = 1
+                    amount = int(tokens[index])
+                    index += 1
                 if index < len(tokens):
                     colors = tokens[index].split('/')
                     
             result['field'] = 'mana'
             result['value'] = colors
             result['amount'] = amount
+
+        elif action in ["draw", "discard", "heal", "damage"]:
+            if index < len(tokens):
+                if type(tokens[index]) == tuple:
+                    result["value"] == tokens[index]
+                    index += 1
+
+                if tokens[index] == "creatureid":
+                    result["creatureid"] = True
+                    index += 1
+                
             
