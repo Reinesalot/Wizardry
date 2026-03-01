@@ -41,7 +41,6 @@ class Parser:
             "attacking?",
             "blocking?",
             "discard?",
-            "tapfor",
         ]
         self.STATIC_ABILITIES = [
             "haste",
@@ -90,7 +89,7 @@ class Parser:
                 if parsed:
                     instructions.append(parsed)
 
-        return instruction
+        return instructions
 
     def tokenise(self, instruction: str) -> dict[str, Any]:
         """
@@ -249,7 +248,7 @@ class Parser:
         elif action in ["draw", "discard", "heal", "damage", "destroy", "kill", "revive", "nomanareset", "invuln"]:
             if index < len(tokens):
                 if type(tokens[index]) == tuple:
-                    result["value"] == tokens[index]
+                    result["value"] = tokens[index]
                     index += 1
 
                 if tokens[index] == "creatureid":
@@ -303,7 +302,10 @@ class Parser:
                     if '/' in target_token:
                         result['target_type'] = target_token.split('/')
                         index += 1
-                    
+
+        # Increase/decrease stats for spell cards
+        # Syntax should be something like castinc creatureid att 4
+        # Permanent increase
         elif action in ["castinc", "castdec"]:
             if index < len(tokens):
                 if tokens[index] == "creatureid":
@@ -315,6 +317,7 @@ class Parser:
                 result["value"] = tokens[index]
                 index += 1
         
+        # Morphs a creature
         elif action == "morph":
             if index < len(tokens):
                 if tokens[index] == "creatureid":
@@ -322,6 +325,9 @@ class Parser:
                     index += 1
                 
                 result["value"] = tokens[index]
+
+        # Return the parsed result for any action branch
+        return result
 
     def split_paren_tokens(self, paren_content: str) -> list:
         """

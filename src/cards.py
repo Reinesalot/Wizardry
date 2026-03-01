@@ -63,7 +63,7 @@ class CreatureCard(Card):
           :param effect: The card's effects scripted in custom syntax.
           :type effect: str
           """
-          super().__init__(name, generic_mana, sp_mana, "Creature", description)
+          super().__init__(name, generic_mana, sp_mana, "Creature", description, effect)
           self.attack = att
           self.defence = end
      
@@ -80,4 +80,58 @@ class CreatureCard(Card):
                     "defence": self.defence,
                }
           )
+          return data
+     
+class SpellCard(Card):
+     def __init__(self, name: str, generic_mana: int, sp_mana: int, description: str, effect: str) -> None:
+          """
+          Initialises a Spell Card.
+          
+          :param name: Name of the card.
+          :type name: str
+          :param generic_mana: Any coloured mana cost.
+          :type generic_mana: int
+          :param sp_mana: Coloured mana type.
+          :type sp_mana: int
+          :param description: The description of the card.
+          :type description: str
+          :param effect: The card's effects scripted in custom syntax.
+          :type effect: str
+          """
+          super().__init__(name, generic_mana, sp_mana, "Spell", description, effect)
+     
+     def to_dict(self) -> dict:
+          """
+          Returns a dictionary representation of the card.
+          
+          :rtype: dict
+          """
+          data = super().to_dict()
+          return data
+     
+class EnchantCard(Card):
+     def __init__(self, name: str, generic_mana: int, sp_mana: int, description: str, effect: str) -> None:
+          """
+          Initialises an Enchantment Card.
+          
+          :param name: Name of the card.
+          :type name: str
+          :param generic_mana: Any coloured mana cost.
+          :type generic_mana: int
+          :param sp_mana: Coloured mana type.
+          :type sp_mana: int
+          :param description: The description of the card.
+          :type description: str
+          :param effect: The card's effects scripted in custom syntax.
+          :type effect: str
+          """
+          super().__init__(name, generic_mana, sp_mana, "Enchantment", description, effect)
+     
+     def to_dict(self) -> dict:
+          """
+          Returns a dictionary representation of the card.
+          
+          :rtype: dict
+          """
+          data = super().to_dict()
           return data
