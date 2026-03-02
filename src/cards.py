@@ -39,10 +39,9 @@ class Card:
             "name": self.name,
             "generic_mana": self.generic_mana,
             "sp_mana": self.sp_mana,
-            "type": self.type,
             "description": self.description,
             "tapped": self.tapped,
-            "status": self.status,
+            "statuses": self.statuses,
             "effect": self.effect
         }
 
@@ -63,7 +62,7 @@ class LandCard(Card):
         :param effect: The card's effects scripted in custom syntax.
         :type effect: str
         """
-        super().__init__(name, generic_mana, sp_mana, "Land", description)
+        super().__init__(name, generic_mana, sp_mana, "Land", description, effect)
         self.effect = effect
 
     def to_dict(self) -> Dict[str, Any]:

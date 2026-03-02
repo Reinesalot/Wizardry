@@ -1,4 +1,8 @@
-from cards import *
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from src.cards import *
 
 
 ##############
@@ -122,13 +126,13 @@ dragon_dwelling = LandCard(
 )
 
 ################
-# SUMMON CARDS #
+# CREATURE CARDS #
 ################
 
 ###################
 # Green creatures #
 ###################
-slime = SummonCard(
+slime = CreatureCard(
     name="Slime",
     generic_mana=1,
     sp_mana="green",
@@ -138,7 +142,7 @@ slime = SummonCard(
     effect="vigilant",
 )
 
-bigger_slime = SummonCard(
+bigger_slime = CreatureCard(
     name="Bigger Slime",
     generic_mana=2,
     sp_mana="green",
@@ -151,7 +155,7 @@ bigger_slime = SummonCard(
     effect="vigilant",
 )
 
-forest_bear = SummonCard(
+forest_bear = CreatureCard(
     name="Forest Bear",
     generic_mana=1,
     sp_mana="green",
@@ -164,7 +168,7 @@ forest_bear = SummonCard(
     effect="",
 )
 
-vine_elemental = SummonCard(
+vine_elemental = CreatureCard(
     name="Vine Elemental",
     generic_mana=3,
     sp_mana="green",
@@ -177,7 +181,7 @@ vine_elemental = SummonCard(
     effect="enter? inc att 1; enter? inc end 1",
 )
 
-alpha_wolf = SummonCard(
+alpha_wolf = CreatureCard(
     name="Alpha Wolf",
     generic_mana=2,
     sp_mana="green",
@@ -190,7 +194,7 @@ alpha_wolf = SummonCard(
     effect="summon? global inc att 1",
 )
 
-stone_giant = SummonCard(
+stone_giant = CreatureCard(
     name="Stone Giant",
     generic_mana=2,
     sp_mana="green",
@@ -203,7 +207,7 @@ stone_giant = SummonCard(
     effect="block? inc end 2",
 )
 
-green_wizar = SummonCard(
+green_wizar = CreatureCard(
     name="Green Wizar",
     generic_mana=1,
     sp_mana="green",
@@ -216,7 +220,7 @@ green_wizar = SummonCard(
     effect="summon? inc att (mana count green)",
 )
 
-king_slime = SummonCard(
+king_slime = CreatureCard(
     name="King Slime",
     generic_mana=4,
     sp_mana="green",
@@ -229,7 +233,7 @@ king_slime = SummonCard(
     effect='summon? inc att 1 "Slime"',
 )
 
-archer = SummonCard(
+archer = CreatureCard(
     name="Archer",
     generic_mana=2,
     sp_mana="green",
@@ -239,7 +243,7 @@ archer = SummonCard(
     effect="reach",
 )
 
-hero = SummonCard(
+hero = CreatureCard(
     name="Hero",
     generic_mana=3,
     sp_mana="green",
@@ -252,7 +256,7 @@ hero = SummonCard(
 ##################
 # Blue creatures #
 ##################
-skeleton = SummonCard(
+skeleton = CreatureCard(
     name="Skeleton",
     generic_mana=2,
     sp_mana="blue",
@@ -262,7 +266,7 @@ skeleton = SummonCard(
     effect="haste; block? inc end 1",
 )
 
-skeleton_army = SummonCard(
+skeleton_army = CreatureCard(
     name="Skeleton Army",
     generic_mana=3,
     sp_mana="blue",
@@ -272,7 +276,7 @@ skeleton_army = SummonCard(
     effect="haste; summon? inc att (graveyard count Skeleton)",
 )
 
-phantom_warrior = SummonCard(
+phantom_warrior = CreatureCard(
     name="Phantom Warrior",
     generic_mana=3,
     sp_mana="blue",
@@ -282,7 +286,7 @@ phantom_warrior = SummonCard(
     effect="reach",
 )
 
-sea_serpent = SummonCard(
+sea_serpent = CreatureCard(
     name="Sea Serpent",
     generic_mana=4,
     sp_mana="blue",
@@ -292,7 +296,7 @@ sea_serpent = SummonCard(
     effect="trample",
 )
 
-arcane_scholar = SummonCard(
+arcane_scholar = CreatureCard(
     name="Arcane Scholar",
     generic_mana=2,
     sp_mana="blue",
@@ -305,7 +309,7 @@ arcane_scholar = SummonCard(
     effect="summon? draw 1",
 )
 
-vergil = SummonCard(
+vergil = CreatureCard(
     name="Vergil",
     generic_mana=5,
     sp_mana="blue",
@@ -318,7 +322,7 @@ vergil = SummonCard(
     effect="unblockable",
 )
 
-blue_wizar = SummonCard(
+blue_wizar = CreatureCard(
     name="Blue Wizar",
     generic_mana=1,
     sp_mana="blue",
@@ -331,7 +335,7 @@ blue_wizar = SummonCard(
     effect="summon? inc att (mana count blue)",
 )
 
-mind_sorcerer = SummonCard(
+mind_sorcerer = CreatureCard(
     name="Mind Sorcerer",
     generic_mana=2,
     sp_mana="blue",
@@ -344,7 +348,7 @@ mind_sorcerer = SummonCard(
     effect="summon? draw 1",
 )
 
-wanderer = SummonCard(
+wanderer = CreatureCard(
     name="Wanderer",
     generic_mana=2,
     sp_mana="blue",
@@ -357,7 +361,7 @@ wanderer = SummonCard(
     effect="flying",
 )
 
-mind_flayer = SummonCard(
+mind_flayer = CreatureCard(
     name="Mind Flayer",
     generic_mana=4,
     sp_mana="blue",
@@ -373,7 +377,7 @@ mind_flayer = SummonCard(
 #################
 # Red creatures #
 #################
-goblin_raider = SummonCard(
+goblin_raider = CreatureCard(
     name="Goblin Raider",
     generic_mana=1,
     sp_mana="red",
@@ -383,7 +387,7 @@ goblin_raider = SummonCard(
     effect="haste",
 )
 
-fire_elemental = SummonCard(
+fire_elemental = CreatureCard(
     name="Fire Elemental",
     generic_mana=3,
     sp_mana="red",
@@ -393,7 +397,7 @@ fire_elemental = SummonCard(
     effect="attack? inc att 1",
 )
 
-dragon_whelp = SummonCard(
+dragon_whelp = CreatureCard(
     name="Dragon Whelp",
     generic_mana=2,
     sp_mana="red",
@@ -405,7 +409,7 @@ dragon_whelp = SummonCard(
     effect="flying",
 )
 
-berserker = SummonCard(
+berserker = CreatureCard(
     name="Berserker",
     generic_mana=2,
     sp_mana="red",
@@ -415,7 +419,7 @@ berserker = SummonCard(
     effect="attack? inc att 2; attack? dec end 1",
 )
 
-imp = SummonCard(
+imp = CreatureCard(
     name="Imp",
     generic_mana=1,
     sp_mana="red",
@@ -425,7 +429,7 @@ imp = SummonCard(
     effect="flying",
 )
 
-sazael_the_great = SummonCard(
+sazael_the_great = CreatureCard(
     name="Sazael the Great",
     generic_mana=4,
     sp_mana="red",
@@ -438,7 +442,7 @@ sazael_the_great = SummonCard(
     effect="flying; trample; attack? inc att 2",
 )
 
-red_wizar = SummonCard(
+red_wizar = CreatureCard(
     name="Red Wizar",
     generic_mana=1,
     sp_mana="red",
@@ -451,7 +455,7 @@ red_wizar = SummonCard(
     effect="summon? inc att (mana count red)",
 )
 
-intellect_devourer = SummonCard(
+intellect_devourer = CreatureCard(
     name="Intellect Devourer",
     generic_mana=1,
     sp_mana="red",
