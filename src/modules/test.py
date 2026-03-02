@@ -1,5 +1,4 @@
 from parser import *
 
-my_parser = Parser("tap? inc att 2; tap? inc end 2")
-result = my_parser.parse()
-print(result)
+parser = Parser("entertap; tap? for 1 blue gen 1 green; tap? gen 1 blue")
+print(parser.parse())

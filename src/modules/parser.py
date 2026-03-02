@@ -180,6 +180,15 @@ class Parser:
         if tokens[index].endswith("?"):
             result["trigger"] = tokens[index]
             index += 1
+        
+        # Tap for colour
+        if tokens[index] == "for":
+            result["require"] = True
+            index += 1
+            result["require_number"] = tokens[index]
+            index += 1
+            result["require_colour"] = tokens[index]
+            index += 1
 
         action = tokens[index]
         result["action"] = action
