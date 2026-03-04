@@ -3,7 +3,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.card_index import *
+from src.modules.utils import *
 
+
+# TODO: Game setup
+# TODO: Core game loop (playing cards, blocking, etc.)
 
 class GameEngine:
     def __init__(self, game_key: str, p1: str, p2: str) -> None:

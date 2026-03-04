@@ -6,19 +6,4 @@ from src.modules.parser import *
 from src.modules.utils import *
 from src.cards import *
 
-forest_bear = CreatureCard(
-    name="Forest Bear",
-    generic_mana=1,
-    sp_mana="green",
-    description=(
-        "A powerful bear from the deep forest."
-        "|Why does he look like a dog"
-    ),
-    att=2,
-    end=2,
-    effect="inc att 2",
-)
-
-new_card = update_card(forest_bear, {""}, "player")
-print(new_card.to_dict())
 

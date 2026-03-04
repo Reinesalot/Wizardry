@@ -37,6 +37,7 @@ class Card:
         return {
             "id": str(self.id),
             "name": self.name,
+            "type": self.type,
             "generic_mana": self.generic_mana,
             "sp_mana": self.sp_mana,
             "description": self.description,
@@ -63,7 +64,6 @@ class LandCard(Card):
         :type effect: str
         """
         super().__init__(name, generic_mana, sp_mana, "Land", description, effect)
-        self.effect = effect
 
     def to_dict(self) -> Dict[str, Any]:
         """
@@ -72,7 +72,6 @@ class LandCard(Card):
         :rtype: dict
         """
         data = super().to_dict()
-        data["effect"] = self.effect
         return data
      
 
