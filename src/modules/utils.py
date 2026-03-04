@@ -9,7 +9,7 @@ import copy
 from typing import Dict, Any
 
 
-def update_card(card: Card, game_state: Dict[str, Any], player: str) -> CreatureCard:
+def update_card(card: Card, trigger: str, game_state: Dict[str, Any], player: str) -> CreatureCard:
     """
     Updates the card after executing the effect. Works only for Creature cards.
 
@@ -18,37 +18,6 @@ def update_card(card: Card, game_state: Dict[str, Any], player: str) -> Creature
     :param game_state
     """
 
-    if not isinstance(card, CreatureCard):
-        return card     # Not a creature
-
-    updated_card = copy.deepcopy(card)
-    instructions = Parser(card.effect).parse()
-
-    for ins in instructions:
-        if ins.get("trigger"):
-            continue
-
-        action = ins.get("action")
-        
-        
-        field = ins.get("field")
-        value = ins.get("value")
-        if type(value) == tuple:
-            value = resolve_expr(value, game_state, player)
-
-        if action == "inc":
-            if field == "att":
-                updated_card.attack += value
-            elif field == "end":
-                updated_card.defence += value
-
-        elif action == "dec":
-            if field == "att":
-                update_card.attack -= value
-            elif field == "end":
-                updated_card.defence -= value
-
-    return updated_card
 
 def resolve_expr(expr: str, game_state: Dict[str, Any], player: str) -> int:
     """
@@ -108,4 +77,6 @@ def reconstruct_card(card: Dict[str, Any]) -> Card:
             description=card.get("description"),
             effect=card.get("effect")
         )
+    
+    elif card_type == 
 
