@@ -43,7 +43,8 @@ class Card:
             "description": self.description,
             "tapped": self.tapped,
             "statuses": self.statuses,
-            "effect": self.effect
+            "effect": self.effect,
+            "type": self.card_type
         }
 
 

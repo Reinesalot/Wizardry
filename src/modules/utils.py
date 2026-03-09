@@ -78,5 +78,5 @@ def reconstruct_card(card: Dict[str, Any]) -> Card:
             effect=card.get("effect")
         )
     
-    elif card_type == 
+    return return_card
 

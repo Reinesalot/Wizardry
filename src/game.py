@@ -32,7 +32,7 @@ class GameEngine:
         
         # Setup game state
         
-        data = { p1:
+        p1_data = { p1:
                     {
                         "deck": [],
                         "hand": [],
@@ -48,17 +48,36 @@ class GameEngine:
 
         for card in p1_deck:
             card.id = i
-            data[p1]["deck"].append(
-                { str(card.id):
-                    {
-                        "name": card.name,
-                        "generic_mana": card.generic_mana,
-                        "sp_mana": card.sp_mana,
-                        "description": card.description,
-                        "tapped": card.tapped,
-                        "statuses": card.statuses,
-                        "effect": card.effect,
+            if card.card_type == "Land":
+                p1_data[p1]["deck"].append(
+                    { str(card.id):
+                        {
+                            "name": card.name,
+                            "generic_mana": card.generic_mana,
+                            "sp_mana": card.sp_mana,
+                            "description": card.description,
+                            "tapped": card.tapped,
+                            "statuses": card.statuses,
+                            "effect": card.effect,
+                        }
                     }
-                }
-            )
-
+                )
+            elif card.card_type == "Creature":
+                p1_data[p1]["deck"].append(
+                    { str(card.id):
+                        {
+                            "name": card.name,
+                            "attack": card.attack,
+                            "defence": card.defence,
+                            "generic_mana": card.generic_mana,
+                            "sp_mana": card.sp_mana,
+                            "description": card.description,
+                            "tapped": card.tapped,
+                            "statuses": card.statuses,
+                            "effect": card.effect,
+                        }
+                    }
+                )
+            i += 1
+    
+        print(p1_data)
